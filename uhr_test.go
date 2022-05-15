@@ -30,25 +30,31 @@ func TestUhr(t *testing.T) {
 	}
 }
 
-// func TestWeekday(t *testing.T) {
-// 	for _, w := range []time.Weekday{
-// 		time.Sunday,
-// 		time.Monday,
-// 		time.Tuesday,
-// 		time.Wednesday,
-// 		time.Thursday,
-// 		time.Friday,
-// 		time.Saturday,
-// 	} {
-// 		w := w
-// 		t.Run(w.String(), func(t *testing.T) {
-// 			t.Parallel()
-// 			now := time.Time{}
-// 			requireEqual(t, []string(Weekday(now)))
-// 		})
-// 	}
-// }
-//
+func TestWeekday(t *testing.T) {
+	for _, w := range []time.Weekday{
+		time.Sunday,
+		time.Monday,
+		time.Tuesday,
+		time.Wednesday,
+		time.Thursday,
+		time.Friday,
+		time.Saturday,
+	} {
+		w := w
+		t.Run(w.String(), func(t *testing.T) {
+			t.Parallel()
+			now := mockWeekdayer{w}
+			requireEqual(t, []string{Weekday(now)})
+		})
+	}
+}
+
+type mockWeekdayer struct {
+	w time.Weekday
+}
+
+func (w mockWeekdayer) Weekday() time.Weekday { return w.w }
+
 func TestNumber(t *testing.T) {
 	var numbers []string
 	for i := 1; i < 60; i++ {

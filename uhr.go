@@ -170,7 +170,11 @@ func Uhr(t time.Time) []string {
 	return result
 }
 
-func Weekday(t time.Time) string {
+type Weekdayer interface {
+	Weekday() time.Weekday
+}
+
+func Weekday(t Weekdayer) string {
 	switch t.Weekday() {
 	case time.Sunday:
 		return "Sonntag"
