@@ -46,7 +46,7 @@ var (
 
 func (m model) View() string {
 	s := bold.Render(fmt.Sprintf(
-		"Hallo!\nHeute ist %s.\nEs ist jetz %s, aber du kannst auch sagen:",
+		"Hallo!\nHeute ist %s.\nEs ist jetzt %s, aber du kannst auch sagen:",
 		uhr.Weekday(m.t),
 		m.t.Format(time.Kitchen)),
 	)
