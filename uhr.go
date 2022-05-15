@@ -2,86 +2,48 @@ package uhr
 
 import (
 	"fmt"
+	"sort"
 	"time"
 )
 
 func Uhr(t time.Time) []string {
-	result := []string{
-		t.Format("15:04"),
-	}
+	result := []string{}
 
 	if t.Minute() != 0 {
 		result = append(
 			result,
-			t.Format("15 Ühr 04"),
-			number(t.Hour())+" Ühr "+number(t.Minute()),
+			t.Format("15 Uhr 04"),
+			number(t.Hour())+" Uhr "+number(t.Minute()),
 		)
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				t.Format("3 Ühr 04"),
-				number(t.Hour()-12)+" Ühr "+number(t.Minute()),
-			)
-		}
 	}
 
 	switch t.Minute() {
 	case 0:
 		result = append(
 			result,
-			t.Format("15 Ühr"),
-			number(t.Hour())+" Ühr",
+			t.Format("15 Uhr"),
+			number(t.Hour())+" Uhr",
 			t.Format("Punkt 15"),
 			"Punkt "+number(t.Hour()),
 		)
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				t.Format("3 Ühr"),
-				number(t.Hour()-12)+" Ühr",
-				t.Format("Punkt 3"),
-				"Punkt "+number(t.Hour()-12),
-			)
-		}
 	case 15:
 		result = append(
 			result,
 			t.Format("Viertel nach 15"),
 			"Viertel nach "+number(t.Hour()),
 		)
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				t.Format("Viertel nach 3"),
-				"Viertel nach "+number(t.Hour()-12),
-			)
-		}
 	case 30:
 		result = append(
 			result,
 			t.Add(time.Hour).Format("Halb 15"),
 			"Halb "+number(t.Hour()+1),
 		)
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				t.Add(time.Hour).Format("Halb 3"),
-				"Halb "+number(t.Hour()+1-12),
-			)
-		}
 	case 45:
 		result = append(
 			result,
 			t.Add(time.Hour).Format("Viertel vor 15"),
 			"Viertel vor "+number(t.Hour()+1),
 		)
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				t.Add(time.Hour).Format("Viertel vor 3"),
-				"Viertel vor "+number(t.Hour()+1-12),
-			)
-		}
 	}
 
 	if t.Minute() > 0 && t.Minute() <= 20 {
@@ -96,19 +58,6 @@ func Uhr(t time.Time) []string {
 				fmt.Sprintf("kurz nach %s", number(t.Hour())),
 			)
 		}
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				fmt.Sprintf("%d nach %d", t.Minute(), t.Hour()-12),
-				fmt.Sprintf("%s nach %s", number(t.Minute()), number(t.Hour()-12)),
-			)
-			if t.Minute() < 5 {
-				result = append(
-					result,
-					fmt.Sprintf("kurz nach %s", number(t.Hour()-12)),
-				)
-			}
-		}
 	}
 	if t.Minute() >= 40 && t.Minute() <= 59 {
 		result = append(
@@ -122,19 +71,6 @@ func Uhr(t time.Time) []string {
 				fmt.Sprintf("kurz vor %s", number(t.Hour()+1)),
 			)
 		}
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				fmt.Sprintf("%d vor %d", 60-t.Minute(), t.Hour()+1-12),
-				fmt.Sprintf("%s vor %s", number(60-t.Minute()), number(t.Hour()+1-12)),
-			)
-			if t.Minute() > 55 {
-				result = append(
-					result,
-					fmt.Sprintf("kurz vor %s", number(t.Hour()+1-12)),
-				)
-			}
-		}
 	}
 
 	if t.Minute() >= 20 && t.Minute() < 30 {
@@ -143,13 +79,6 @@ func Uhr(t time.Time) []string {
 			fmt.Sprintf("%d vor halb %d", 30-t.Minute(), t.Hour()),
 			fmt.Sprintf("%s vor halb %s", number(30-t.Minute()), number(t.Hour())),
 		)
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				fmt.Sprintf("%d vor halb %d", 30-t.Minute(), t.Hour()-12),
-				fmt.Sprintf("%s vor halb %s", number(30-t.Minute()), number(t.Hour()-12)),
-			)
-		}
 	}
 
 	if t.Minute() > 30 && t.Minute() <= 40 {
@@ -158,15 +87,13 @@ func Uhr(t time.Time) []string {
 			fmt.Sprintf("%d nach halb %d", t.Minute()-30, t.Hour()),
 			fmt.Sprintf("%s nach halb %s", number(t.Minute()-30), number(t.Hour())),
 		)
-		if t.Hour() > 12 {
-			result = append(
-				result,
-				fmt.Sprintf("%d nach halb %d", t.Minute()-30, t.Hour()-12),
-				fmt.Sprintf("%s nach halb %s", number(t.Minute()-30), number(t.Hour()-12)),
-			)
-		}
 	}
 
+	if t.Hour() > 12 {
+		result = append(result, Uhr(t.Add(-12*time.Hour))...)
+	}
+
+	sort.Strings(result)
 	return result
 }
 
