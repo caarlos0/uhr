@@ -12,22 +12,43 @@ import (
 	"github.com/matryer/is"
 )
 
+const layout = "15:04"
+
 func TestUhr(t *testing.T) {
 	t.Parallel()
-	for _, v := range []string{
-		"2022-05-14 23:08",
-		"2022-05-13 13:00",
-		"2022-05-12 13:30",
-		"2022-05-11 13:45",
-		"2022-05-11 13:15",
-	} {
-		t.Run(v, func(t *testing.T) {
-			t.Parallel()
-			requireEqual(t, Uhr(parse(t, v)))
-		})
+	for h := 0; h <= 23; h++ {
+		for m := 0; m <= 59; m++ {
+			s := fmt.Sprintf("%02d:%02d", h, m)
+			t.Run(s, func(t *testing.T) {
+				t.Parallel()
+				is := is.New(t)
+				now, err := time.Parse(layout, s)
+				is.NoErr(err)
+				requireEqual(t, Uhr(now))
+			})
+		}
 	}
 }
 
+// func TestWeekday(t *testing.T) {
+// 	for _, w := range []time.Weekday{
+// 		time.Sunday,
+// 		time.Monday,
+// 		time.Tuesday,
+// 		time.Wednesday,
+// 		time.Thursday,
+// 		time.Friday,
+// 		time.Saturday,
+// 	} {
+// 		w := w
+// 		t.Run(w.String(), func(t *testing.T) {
+// 			t.Parallel()
+// 			now := time.Time{}
+// 			requireEqual(t, []string(Weekday(now)))
+// 		})
+// 	}
+// }
+//
 func TestNumber(t *testing.T) {
 	var numbers []string
 	for i := 1; i < 60; i++ {
@@ -35,15 +56,6 @@ func TestNumber(t *testing.T) {
 		fmt.Println(number(i))
 	}
 	requireEqual(t, numbers)
-}
-
-const layout = "2006-01-02 15:04"
-
-func parse(tb testing.TB, s string) time.Time {
-	tb.Helper()
-	t, err := time.Parse(layout, s)
-	is.New(tb).NoErr(err)
-	return t
 }
 
 var update = flag.Bool("update", false, "update .golden files")

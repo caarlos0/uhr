@@ -193,6 +193,8 @@ func Weekday(t time.Time) string {
 
 func number(i int) string {
 	switch abs(i) {
+	case 0:
+		return "null"
 	case 1:
 		return "eins"
 	case 2:
