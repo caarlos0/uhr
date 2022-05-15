@@ -29,7 +29,11 @@ func main() {
 		case now := <-t.C:
 			now = now.Add(-5 * time.Minute)
 			termenv.ClearScreen()
-			fmt.Println(bold.Render(fmt.Sprintf("Hallo!\nHeute ist %s.\nEs ist...", uhr.Weekday(now))))
+			fmt.Println(bold.Render(fmt.Sprintf(
+				"Hallo!\nHeute ist %s.\nEs ist jetz %s, aber du kannst auch sagen:",
+				uhr.Weekday(now),
+				now.Format(time.Kitchen))),
+			)
 			for _, l := range uhr.Uhr(now) {
 				fmt.Println(list.Render("- " + l))
 			}
