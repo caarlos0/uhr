@@ -12,4 +12,4 @@ I mean, probably... if you speak german and want to take a look, I'll greatly ap
 
 ---
 
-_Viele danke!_
+_Vielen dank!_
