@@ -39,18 +39,22 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 var (
-	bold = lipgloss.NewStyle().Bold(true)
-	list = lipgloss.NewStyle().Faint(true).Italic(true).MarginLeft(1)
+	bold   = lipgloss.NewStyle().Bold(true)
+	list   = lipgloss.NewStyle().Italic(true).MarginLeft(1)
+	footer = lipgloss.NewStyle().Foreground(lipgloss.Color("gray")).Faint(true)
 )
 
 func (m model) View() string {
 	s := bold.Render(fmt.Sprintf(
-		"Hallo!\nHeute ist %s.\nEs ist jetz %s, aber du kannst auch sagen:\n",
+		"Hallo!\nHeute ist %s.\nEs ist jetz %s, aber du kannst auch sagen:",
 		uhr.Weekday(m.t),
 		m.t.Format(time.Kitchen)),
 	)
+	s += "\n"
 	for _, l := range uhr.Uhr(m.t) {
-		s += list.Render(fmt.Sprintf("- %s\n", l))
+		s += list.Render(fmt.Sprintf("- "+l)) + "\n"
 	}
+
+	s += footer.Render("press 'q' to quit")
 	return s
 }
