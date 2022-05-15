@@ -1,42 +1,15 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"os"
-	"time"
+	"log"
 
-	"github.com/caarlos0/uhr"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/muesli/termenv"
-)
-
-var (
-	bold = lipgloss.NewStyle().Bold(true)
-	list = lipgloss.NewStyle().Faint(true).Italic(true).MarginLeft(1)
+	"github.com/caarlos0/uhr/pkg/ui"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	t := time.NewTicker(time.Second)
-	defer t.Stop()
-	for {
-		select {
-		case <-ctx.Done():
-			os.Exit(0)
-		case now := <-t.C:
-			now = now.Add(-5 * time.Minute)
-			termenv.ClearScreen()
-			fmt.Println(bold.Render(fmt.Sprintf(
-				"Hallo!\nHeute ist %s.\nEs ist jetz %s, aber du kannst auch sagen:",
-				uhr.Weekday(now),
-				now.Format(time.Kitchen))),
-			)
-			for _, l := range uhr.Uhr(now) {
-				fmt.Println(list.Render("- " + l))
-			}
-		}
+	p := tea.NewProgram(ui.New())
+	if err := p.Start(); err != nil {
+		log.Fatal(err)
 	}
 }
