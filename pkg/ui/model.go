@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/caarlos0/uhr"
@@ -39,22 +38,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 var (
-	bold   = lipgloss.NewStyle().Bold(true)
-	list   = lipgloss.NewStyle().Italic(true).MarginLeft(1)
-	footer = lipgloss.NewStyle().Foreground(lipgloss.Color("gray")).Faint(true)
+	indigo  = lipgloss.AdaptiveColor{Light: "#5A56E0", Dark: "#7571F9"}
+	fuschia = lipgloss.AdaptiveColor{Light: "#EE6FF8", Dark: "#EE6FF8"}
+	header  = lipgloss.NewStyle().Background(fuschia).Bold(true).Foreground(lipgloss.Color("white")).PaddingRight(1).PaddingLeft(1)
+	list    = lipgloss.NewStyle().MarginLeft(1)
+	italic  = lipgloss.NewStyle().Italic(true).Foreground(indigo)
+	footer  = lipgloss.NewStyle().Foreground(lipgloss.Color("gray")).Faint(true)
 )
 
 func (m model) View() string {
-	s := bold.Render(fmt.Sprintf(
-		"Hallo!\nHeute ist %s.\nEs ist jetzt %s, aber du kannst auch sagen:",
-		uhr.Weekday(m.t),
-		m.t.Format(time.Kitchen)),
-	)
-	s += "\n"
+	s := header.Render("Hallo!") + "\n\n"
+	s += "Heute ist " + italic.Render(uhr.Weekday(m.t)) + "\n"
+	s += "Es ist jetzt " + italic.Render(m.t.Format(time.Kitchen)) + ", aber du kannst auch sagen:\n"
 	for _, l := range uhr.Uhr(m.t) {
-		s += list.Render(fmt.Sprintf("- "+l)) + "\n"
+		s += list.Render("- ") + italic.Render(l) + "\n"
 	}
+	s += "Es ist in " + italic.Render(uhr.PartOfDay(m.t)) + ".\n"
 
-	s += footer.Render("press 'q' to quit")
+	s += footer.Render("\npress 'q' to quit")
 	return s
 }
