@@ -6,91 +6,79 @@ import (
 	"time"
 )
 
+type formatFn func(t time.Time) string
+
+func doFormatInformal(t time.Time, fn formatFn) []string {
+	result := []string{fn(t)}
+	if t.Hour() > 12 {
+		result = append(result, fn(informalHour(t)))
+	}
+	return result
+}
+
+func informalHour(t time.Time) time.Time {
+	if t.Hour() > 12 {
+		return t.Add(-12 * time.Hour)
+	}
+	return t
+}
+
+func format(format string, args ...int) string {
+	aargs := make([]any, 0, len(args))
+	for _, arg := range args {
+		aargs = append(aargs, number(arg))
+	}
+	return fmt.Sprintf(format, aargs...)
+}
+
 func Uhr(t time.Time) []string {
 	result := []string{}
+	ti := informalHour(t)
 
 	if t.Minute() != 0 {
-		result = append(
-			result,
-			// t.Format("15 Uhr 04"),
-			number(t.Hour())+" Uhr "+number(t.Minute()),
-		)
+		result = append(result,
+			doFormatInformal(t, func(t time.Time) string {
+				return format("%s Uhr %s", t.Hour(), t.Minute())
+			})...)
 	}
 
 	switch t.Minute() {
 	case 0:
-		result = append(
-			result,
-			// t.Format("15 Uhr"),
-			number(t.Hour())+" Uhr",
-			// t.Format("punkt 15"),
-			"punkt "+number(t.Hour()),
-		)
+		result = append(result,
+			doFormatInformal(t, func(t time.Time) string {
+				return format("%s Uhr", t.Hour())
+			})...)
+		result = append(result,
+			doFormatInformal(t, func(t time.Time) string {
+				return format("punkt %s", t.Hour())
+			})...)
 	case 15:
-		result = append(
-			result,
-			// t.Format("viertel nach 15"),
-			"Viertel nach "+number(t.Hour()),
-		)
+		result = append(result, format("viertel nach %s", ti.Hour()))
 	case 30:
-		result = append(
-			result,
-			// t.Add(time.Hour).Format("halb 15"),
-			"halb "+number(t.Hour()+1),
-		)
+		result = append(result, format("halb %s", ti.Hour()+1))
 	case 45:
-		result = append(
-			result,
-			// t.Add(time.Hour).Format("viertel vor 15"),
-			"viertel vor "+number(t.Hour()+1),
-		)
+		result = append(result, format("viertel vor %s", ti.Hour()+1))
 	}
 
 	if t.Minute() > 0 && t.Minute() <= 20 {
-		result = append(
-			result,
-			// fmt.Sprintf("%d nach %d", t.Minute(), t.Hour()),
-			fmt.Sprintf("%s nach %s", number(t.Minute()), number(t.Hour())),
-		)
+		result = append(result, format("%s nach %s", t.Minute(), ti.Hour()))
 		if t.Minute() < 5 {
-			result = append(
-				result,
-				fmt.Sprintf("kurz nach %s", number(t.Hour())),
-			)
+			result = append(result, format("kurz nach %s", ti.Hour()))
 		}
 	}
 	if t.Minute() >= 40 && t.Minute() <= 59 {
-		result = append(
-			result,
-			// fmt.Sprintf("%d vor %d", 60-t.Minute(), t.Hour()+1),
-			fmt.Sprintf("%s vor %s", number(60-t.Minute()), number(t.Hour()+1)),
-		)
+		result = append(result, format("%s vor %s", 60-t.Minute(), ti.Hour()+1))
 		if t.Minute() > 55 {
-			result = append(
-				result,
-				fmt.Sprintf("kurz vor %s", number(t.Hour()+1)),
-			)
+			result = append(result, format("kurz vor %s", ti.Hour()+1))
 		}
 	}
 
 	if t.Minute() >= 20 && t.Minute() < 30 {
-		result = append(
-			result,
-			// fmt.Sprintf("%d vor halb %d", 30-t.Minute(), t.Hour()),
-			fmt.Sprintf("%s vor halb %s", number(30-t.Minute()), number(t.Hour())),
-		)
+		result = append(result, format("%s vor halb %s", 30-t.Minute(), ti.Hour()))
 	}
 
 	if t.Minute() > 30 && t.Minute() <= 40 {
-		result = append(
-			result,
-			// fmt.Sprintf("%d nach halb %d", t.Minute()-30, t.Hour()),
-			fmt.Sprintf("%s nach halb %s", number(t.Minute()-30), number(t.Hour())),
-		)
-	}
-
-	if t.Hour() > 12 {
-		result = append(result, Uhr(t.Add(-12*time.Hour))...)
+		result = append(result, format("%s nach halb %s", t.Minute()-30, ti.Hour()))
 	}
 
 	sort.Strings(result)
