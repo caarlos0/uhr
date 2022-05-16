@@ -74,11 +74,11 @@ func Uhr(t time.Time) []string {
 	}
 
 	if t.Minute() >= 20 && t.Minute() < 30 {
-		result = append(result, format("%s vor halb %s", 30-t.Minute(), ti.Hour()))
+		result = append(result, format("%s vor halb %s", 30-t.Minute(), ti.Hour()+1))
 	}
 
 	if t.Minute() > 30 && t.Minute() <= 40 {
-		result = append(result, format("%s nach halb %s", t.Minute()-30, ti.Hour()))
+		result = append(result, format("%s nach halb %s", t.Minute()-30, ti.Hour()+1))
 	}
 
 	sort.Strings(result)
