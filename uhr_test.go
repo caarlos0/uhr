@@ -30,6 +30,25 @@ func TestUhr(t *testing.T) {
 	}
 }
 
+func TestPartOfDay(t *testing.T) {
+	for i := 0; i <= 23; i++ {
+		i := i
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			t.Parallel()
+			now := mockHourer{i}
+			requireEqual(t, []string{PartOfDay(now)})
+		})
+	}
+}
+
+type mockHourer struct {
+	h int
+}
+
+func (h mockHourer) Hour() int {
+	return h.h
+}
+
 func TestWeekday(t *testing.T) {
 	for _, w := range []time.Weekday{
 		time.Sunday,

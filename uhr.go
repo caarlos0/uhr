@@ -85,6 +85,27 @@ func Uhr(t time.Time) []string {
 	return result
 }
 
+type Hourer interface {
+	Hour() int
+}
+
+func PartOfDay(h Hourer) string {
+	t := h.Hour()
+	if t >= 6 && t < 12 {
+		return "der Morgen"
+	}
+	if t >= 12 && t < 14 {
+		return "der Mittag"
+	}
+	if t >= 14 && t < 18 {
+		return "der Nachmittag"
+	}
+	if t >= 18 && t < 22 {
+		return "der Abend"
+	}
+	return "die Nacht"
+}
+
 type Weekdayer interface {
 	Weekday() time.Weekday
 }
