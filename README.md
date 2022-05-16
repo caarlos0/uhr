@@ -1,18 +1,18 @@
 # Uhr 🇩🇪
 
-I'm learning German and got to the part in where I should learn how to tell the time.
+I'm learning German and got to the part in which I learn how to tell the time.
 
 ![CleanShot 2022-05-15 at 22 20 42@2x](https://user-images.githubusercontent.com/245435/168504309-d324f79d-3e91-48fa-b82e-4f0d2f723e5e.png)
 
+Germans have some different ways of telling the time, so, to practice numbers, time telling, days of week, parts of the day and etc, I've built this simple "clock" (hence the project name, _Uhr_ is "clock" in German) that tells current time in some common forms Germans use.
 
-Germans have a rather different way of telling the time, so, to practice both numbers, time telling, days of week, etc, I built a simple "clock" (hence the project name) that tells current time in all forms germans usually do.
+The code was hammered together in a rainy Sunday, while studying, so, please don't hold me accountable for any of this.
 
-The code is hammered together, please don't hold me accountable for this.
+## Is this even accurate?
 
-## Is this accurate?
-
-I mean, probably... if you speak german and want to take a look, I'll greatly appreciate it.
+I mean, probably... although if you speak German and want to take a look, feel free to do so.
+Issues and PRs are greatly appreciated.
 
 ---
 
-_Vielen dank!_
+_Bis bald und viele Grüße!_
