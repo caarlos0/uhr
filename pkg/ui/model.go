@@ -55,7 +55,7 @@ func (m model) View() string {
 	for _, l := range uhr.Uhr(m.t) {
 		s += list.Render("- ") + italic.Render(l) + "\n"
 	}
-	s += "Es ist in " + italic.Render(uhr.PartOfDay(m.t)) + ".\n"
+	s += "Es ist " + italic.Render(uhr.PartOfDay(m.t)) + ".\n"
 
 	s += footer.Render("\npress 'q' to quit")
 	return s
