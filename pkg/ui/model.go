@@ -34,7 +34,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		}
 	}
-	return m, nil
+	return m, tea.Every(time.Second, func(t time.Time) tea.Msg {
+		return t
+	})
 }
 
 var (
@@ -49,7 +51,7 @@ var (
 func (m model) View() string {
 	s := header.Render("Hallo!") + "\n\n"
 	s += "Heute ist " + italic.Render(uhr.Weekday(m.t)) + ".\n"
-	s += "Es ist jetzt " + italic.Render(m.t.Format(time.Kitchen)) + ", aber du kannst auch sagen:\n"
+	s += "Es ist jetzt " + italic.Render(m.t.Format(time.Stamp)) + ", aber du kannst auch sagen:\n"
 	for _, l := range uhr.Uhr(m.t) {
 		s += list.Render("- ") + italic.Render(l) + "\n"
 	}
