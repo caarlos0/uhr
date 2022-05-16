@@ -2,7 +2,8 @@
 
 I'm learning German and got to the part in which I learn how to tell the time.
 
-![CleanShot 2022-05-15 at 22 20 42@2x](https://user-images.githubusercontent.com/245435/168504309-d324f79d-3e91-48fa-b82e-4f0d2f723e5e.png)
+![CleanShot 2022-05-16 at 09 09 30@2x](https://user-images.githubusercontent.com/245435/168589488-f212727c-65c4-4708-a878-13036fac11d3.png)
+
 
 Germans have some different ways of telling the time, so, to practice numbers, time telling, days of week, parts of the day and etc, I've built this simple "clock" (hence the project name, _Uhr_ is "clock" in German) that tells current time in some common forms Germans use.
 
