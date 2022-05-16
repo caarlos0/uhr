@@ -92,18 +92,18 @@ type Hourer interface {
 func PartOfDay(h Hourer) string {
 	t := h.Hour()
 	if t >= 6 && t < 12 {
-		return "der Morgen"
+		return "am Morgen"
 	}
 	if t >= 12 && t < 14 {
-		return "der Mittag"
+		return "am Mittag"
 	}
 	if t >= 14 && t < 18 {
-		return "der Nachmittag"
+		return "am Nachmittag"
 	}
 	if t >= 18 && t < 22 {
-		return "der Abend"
+		return "am Abend"
 	}
-	return "die Nacht"
+	return "in der Nacht"
 }
 
 type Weekdayer interface {
