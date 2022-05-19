@@ -57,6 +57,6 @@ func (m model) View() string {
 	}
 	s += "Es ist " + italic.Render(uhr.PartOfDay(m.t)) + ".\n"
 
-	s += footer.Render("\npress 'q' to quit")
+	s += footer.Render("\ndrücke 'q' zum Beenden")
 	return s
 }
