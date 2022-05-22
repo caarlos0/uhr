@@ -2,11 +2,26 @@ before:
   hooks:
     - go mod tidy
 builds:
-  - env:
+  - id: uhr
+    env:
       - CGO_ENABLED=0
     targets: [ go_first_class ]
     main: ./cmd/uhr/
+  - id: wisuhr
+    binary: wisuhr
+    env:
+      - CGO_ENABLED=0
+    goos: [ linux ]
+    goarch: [ amd64, arm64 ]
+    main: ./cmd/wisuhr/
 
+archives:
+  - id: uhr
+    builds: [ uhr ]
+    name_template: "uhr_{{ .Os }}_{{ .Arch }}"
+  - id: wisuhr
+    builds: [ wisuhr ]
+    name_template: "wisuhr_{{ .Os }}_{{ .Arch }}"
 
 changelog:
   sort: asc
