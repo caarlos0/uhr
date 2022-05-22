@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -33,7 +34,11 @@ func main() {
 		wish.WithHostKeyPath(".ssh/term_info_ed25519"),
 		wish.WithMiddleware(
 			bubbletea.Middleware(func(s ssh.Session) (tea.Model, []tea.ProgramOption) {
-				return ui.New(), []tea.ProgramOption{tea.WithAltScreen()}
+				m, err := ui.New(tz(s.Environ()))
+				if err != nil {
+					wish.Fatal(s, err)
+				}
+				return m, []tea.ProgramOption{tea.WithAltScreen()}
 			}),
 			logging.Middleware(),
 		),
@@ -58,4 +63,14 @@ func main() {
 	if err := s.Shutdown(ctx); err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func tz(env []string) string {
+	for _, e := range env {
+		k, v, ok := strings.Cut(e, "=")
+		if ok && k == "TZ" {
+			return v
+		}
+	}
+	return ""
 }

@@ -8,14 +8,20 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func New() tea.Model {
-	return model{
-		t: time.Now(),
+func New(tz string) (tea.Model, error) {
+	loc, err := time.LoadLocation(tz)
+	if err != nil {
+		return nil, err
 	}
+	return model{
+		t:  time.Now(),
+		tz: loc,
+	}, err
 }
 
 type model struct {
-	t time.Time
+	t  time.Time
+	tz *time.Location
 }
 
 func (m model) Init() tea.Cmd {
@@ -49,13 +55,14 @@ var (
 )
 
 func (m model) View() string {
+	t := m.t.In(m.tz)
 	s := header.Render("Hallo!") + "\n\n"
 	s += "Heute ist " + italic.Render(uhr.Weekday(m.t)) + ".\n"
-	s += "Es ist jetzt " + italic.Render(m.t.Format("15.04")) + ", aber du kannst auch sagen:\n"
-	for _, l := range uhr.Uhr(m.t) {
+	s += "Es ist jetzt " + italic.Render(t.Format("15.04")) + ", aber du kannst auch sagen:\n"
+	for _, l := range uhr.Uhr(t) {
 		s += list.Render("- ") + italic.Render(l) + "\n"
 	}
-	s += "Es ist " + italic.Render(uhr.PartOfDay(m.t)) + ".\n"
+	s += "Es ist " + italic.Render(uhr.PartOfDay(t)) + ".\n"
 
 	s += footer.Render("\ndrücke 'q' zum Beenden")
 	return s

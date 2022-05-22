@@ -8,7 +8,11 @@ import (
 )
 
 func main() {
-	p := tea.NewProgram(ui.New())
+	m, err := ui.New("Local")
+	if err != nil {
+		log.Fatal(err)
+	}
+	p := tea.NewProgram(m)
 	if err := p.Start(); err != nil {
 		log.Fatal(err)
 	}
