@@ -13,7 +13,7 @@ The code was hammered together in a rainy Sunday, while studying, so, please don
 You can test it without installing using:
 
 ```sh
-ssh -p 2224 ssh.caarlos0.dev
+TZ=America/Sao_Paulo ssh -oSendEnv=TZ -p 2224 ssh.caarlos0.dev
 ```
 
 ## Is this even accurate?
