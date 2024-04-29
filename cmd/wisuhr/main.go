@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/caarlos0/env/v6"
+	"github.com/caarlos0/env/v11"
 	"github.com/caarlos0/uhr/pkg/ui"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/ssh"
@@ -25,8 +25,8 @@ type Config struct {
 }
 
 func main() {
-	var cfg Config
-	if err := env.Parse(&cfg); err != nil {
+	cfg, err := env.ParseAs[Config]()
+	if err != nil {
 		log.Fatalln(err)
 	}
 	s, err := wish.NewServer(
