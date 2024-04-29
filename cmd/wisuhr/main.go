@@ -13,10 +13,10 @@ import (
 	"github.com/caarlos0/env/v6"
 	"github.com/caarlos0/uhr/pkg/ui"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/ssh"
 	"github.com/charmbracelet/wish"
 	"github.com/charmbracelet/wish/bubbletea"
 	"github.com/charmbracelet/wish/logging"
-	"github.com/gliderlabs/ssh"
 )
 
 type Config struct {
