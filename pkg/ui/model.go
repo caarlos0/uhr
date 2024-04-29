@@ -58,7 +58,7 @@ func (m model) View() string {
 	t := m.t.In(m.tz)
 	s := header.Render("Hallo!") + "\n\n"
 	s += "Heute ist " + italic.Render(uhr.Weekday(m.t)) + ".\n"
-	s += "Es ist jetzt " + italic.Render(t.Format("15.04")) + ", aber du kannst auch sagen:\n"
+	s += "Es ist jetzt " + italic.Render(t.Format("15:04")) + ", aber du kannst auch sagen:\n"
 	for _, l := range uhr.Uhr(t) {
 		s += list.Render("- ") + italic.Render(l) + "\n"
 	}
