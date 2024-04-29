@@ -34,7 +34,8 @@ func main() {
 		wish.WithHostKeyPath(".ssh/term_info_ed25519"),
 		wish.WithMiddleware(
 			bubbletea.Middleware(func(s ssh.Session) (tea.Model, []tea.ProgramOption) {
-				m, err := ui.New(tz(s.Environ()))
+				r := bubbletea.MakeRenderer(s)
+				m, err := ui.New(tz(s.Environ()), r)
 				if err != nil {
 					wish.Fatal(s, err)
 				}
