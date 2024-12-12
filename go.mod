@@ -3,7 +3,7 @@ module github.com/caarlos0/uhr
 go 1.18
 
 require (
-	github.com/caarlos0/env/v11 v11.0.0
+	github.com/caarlos0/env/v11 v11.2.2
 	github.com/charmbracelet/bubbletea v0.25.0
 	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/charmbracelet/ssh v0.0.0-20240401141849-854cddfa2917
