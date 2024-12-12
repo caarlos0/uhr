@@ -50,7 +50,7 @@ func main() {
 
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-	log.Printf("Starting SSH server on %s:%d", cfg.Host, cfg.Port)
+	log.Printf("Starting SSH server on %s", net.JoinHostPort(cfg.Host, cfg.Port))
 	go func() {
 		if err = s.ListenAndServe(); err != nil {
 			log.Fatalln(err)
