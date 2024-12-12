@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
+	"net"
 	"os"
 	"os/signal"
 	"strings"
@@ -21,7 +21,7 @@ import (
 
 type Config struct {
 	Host string `env:"HOST" envDefault:"localhost"`
-	Port int    `env:"PORT" envDefault:"23235"`
+	Port string `env:"PORT" envDefault:"23235"`
 }
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	s, err := wish.NewServer(
-		wish.WithAddress(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)),
+		wish.WithAddress(net.JoinHostPort(cfg.Host, cfg.Port)),
 		wish.WithHostKeyPath(".ssh/term_info_ed25519"),
 		wish.WithMiddleware(
 			bubbletea.Middleware(func(s ssh.Session) (tea.Model, []tea.ProgramOption) {
