@@ -1,7 +1,6 @@
 module github.com/caarlos0/uhr
 
-go 1.21
-toolchain go1.24.1
+go 1.24
 
 require (
 	github.com/caarlos0/env/v11 v11.3.1
